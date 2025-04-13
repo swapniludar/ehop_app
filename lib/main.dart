@@ -19,7 +19,7 @@ class BenefitsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Benefits"),
+        title: Text("EHOP Benefits"),
         centerTitle: true,
         backgroundColor: Colors.amber,
       ),

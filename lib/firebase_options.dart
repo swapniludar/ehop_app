@@ -47,7 +47,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD94eIciXrwtMHT5PJ20TfrBrE6Dm291rY',
+    apiKey: '',
     appId: '1:1037891053876:web:81c2e3621b353288261d61',
     messagingSenderId: '1037891053876',
     projectId: 'ehop-backend',
@@ -57,7 +57,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCzh0bNOuazf3_Ql77uqVfX9sQQG9Fox3s',
+    apiKey: '',
     appId: '1:1037891053876:android:ddbf9fc398d1ad43261d61',
     messagingSenderId: '1037891053876',
     projectId: 'ehop-backend',
@@ -65,7 +65,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAreoGvA_V1wIEzuk-buXqTT0jB3d1eqsM',
+    apiKey: '',
     appId: '1:1037891053876:ios:32f5e87929a1f0dd261d61',
     messagingSenderId: '1037891053876',
     projectId: 'ehop-backend',

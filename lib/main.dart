@@ -1,73 +1,87 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ehop_app/model/benefit.dart';
-import 'package:ehop_app/widget/benefit_card.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:ehop_app/pages/home_page.dart';
+import 'package:ehop_app/pages/orders_page.dart';
+import 'package:ehop_app/pages/profile_page.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MaterialApp(home: const BenefitsPage()));
+void main() => runApp(HealthCheckApp());
+
+class HealthCheckApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ehop',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+      ),
+      home: MainScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }
 
-class BenefitsPage extends StatelessWidget {
-  Future<List<Benefit>> getBenefits() async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance.collection('benefits_trial').get();
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
 
-      List<Benefit> benefits =
-          querySnapshot.docs.map((doc) {
-            return Benefit.fromFirestore(
-              doc,
-              null,
-            ); // Assuming your factory method can handle null options
-          }).toList();
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
 
-      return benefits;
-    } catch (e) {
-      print("Error getting benefits: $e");
-      return []; // Return an empty list in case of error
-    }
-  }
-
-  const BenefitsPage({super.key});
+  final List<Widget> _pages = [
+    HomePage(),
+    OrdersPage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("EHOP Benefits"),
-        centerTitle: true,
-        backgroundColor: Colors.amber,
+        title: Text(
+          'ehop',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.teal,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/user-account.png'),
+              radius: 20,
+            ),
+          ),
+        ],
       ),
-      body: FutureBuilder<List<Benefit>>(
-        future: getBenefits(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final benefits = snapshot.data!;
-            return Center(
-              child: ListView.builder(
-                itemCount: benefits.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return BenefitCard(
-                    benefit: benefits[index],
-                    onTap: () => {print("Tapped on ${benefits[index].name}")},
-                  );
-                },
-              ),
-            );
-          } else {
-            return const Center(child: Text('No benefits found'));
-          }
+      body: Container(
+        child: _pages[_currentIndex],
+
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
         },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

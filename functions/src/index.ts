@@ -1,8 +1,8 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
 import * as nodemailer from "nodemailer";
-import { defineSecret } from "firebase-functions/params";
+import {defineSecret} from "firebase-functions/params";
 
 admin.initializeApp();
 
@@ -71,9 +71,9 @@ async function sendOTPEmail(email: string, otp: number) {
   try {
     const mailTransport = await createTransporter();
     await mailTransport.sendMail(mailOptions);
-    logger.info("OTP email sent successfully", { email: email });
+    logger.info("OTP email sent successfully", {email: email});
   } catch (error) {
-    logger.error("Error sending OTP email", { error, email: email });
+    logger.error("Error sending OTP email", {error, email: email});
     throw new HttpsError("internal", "Error sending OTP email");
   }
 }
@@ -97,17 +97,66 @@ export const requestOTP = onCall(
     try {
       await sendOTPEmail(emailAddress, generatedOtp);
       const docRef = await admin.firestore().collection("otps").add(otpData);
-      logger.info("New document created", { documentId: docRef.id });
+      logger.info("New document created", {documentId: docRef.id});
 
       return {
         status: "success",
+        id: docRef.id,
         otp: generatedOtp,
         startTime: createdAt,
         endTime: expiresAt,
       };
     } catch (error) {
-      logger.error("Failed to add document", { error: error }); // log the error
+      logger.error("Failed to add document", {error: error}); // log the error
       throw new HttpsError("internal", "Failed to add document", error);
     }
   },
 );
+
+export const verifyOTP = onCall(async (request) => {
+  const userEnteredEmail = request.data.emailAddress;
+  const userEnteredOtp = request.data.otp;
+
+  logger.error("Verify OTP called");
+
+  let status = "";
+  let message = "";
+  try {
+    const otpRecord = await admin
+      .firestore()
+      .collection("otps")
+      .where("emailAddress", "==", userEnteredEmail)
+      .where("used", "==", false)
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .get();
+
+    if (otpRecord.empty) {
+      status = "failure";
+      message = "Failed to retrieve OTP";
+    } else {
+      otpRecord.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        if (doc.data().otp == userEnteredOtp &&
+              doc.data().expiresAt > new Date()) {
+          doc.ref.update({used: true});
+          status = "success";
+          message = "OTP matches";
+        } else {
+          status = "failure";
+          message = "OTP did not match or it is expired";
+        }
+      });
+    }
+  } catch (error) {
+    logger.error("Failed to get document", {error: error}); // log the error
+    status = "failure";
+    message = "Failed to retrieve OTP";
+  }
+  return {
+    status: status,
+    message: message,
+    otp: userEnteredOtp,
+    email: userEnteredEmail,
+  };
+});

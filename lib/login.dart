@@ -50,12 +50,27 @@ class LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _login() {
+  Future<void> _login() async {
+    try {
+      final functions = FirebaseFunctions.instanceFor(region: 'us-central1');
+      print("Function instance created");
+      print(_otpController.text);
+      print(_emailController.text);
+      final result = await functions.httpsCallable('verifyOTP').call({
+        "emailAddress": _emailController.text,
+        "otp": _otpController.text,
+      });
+      print('Cloud Function verifyOTP result: ${result.data}');
+    } on FirebaseFunctionsException catch (error) {
+      print(error.code);
+      print(error.details);
+      print(error.message);
+    }
     // Simulate login process
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const BenefitsPage()),
-    );
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const BenefitsPage()),
+    // );
   }
 
   @override

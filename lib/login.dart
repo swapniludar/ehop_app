@@ -61,16 +61,30 @@ class LoginPageState extends State<LoginPage> {
         "otp": _otpController.text,
       });
       print('Cloud Function verifyOTP result: ${result.data}');
+      if (result.data['status'] == 'success') {
+        print("Login successful");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BenefitsPage()),
+        );
+      } else {
+        print("Login failed");
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Invalid OTP, try again')));
+        setState(() {
+          _showOTPField = false;
+        });
+      }
     } on FirebaseFunctionsException catch (error) {
-      print(error.code);
-      print(error.details);
-      print(error.message);
+      print("Login failed");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Invalid OTP, try again')));
+      setState(() {
+        _showOTPField = false;
+      });
     }
-    // Simulate login process
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const BenefitsPage()),
-    // );
   }
 
   @override

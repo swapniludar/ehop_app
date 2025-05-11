@@ -138,7 +138,7 @@ export const verifyOTP = onCall(async (request) => {
       otpRecord.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
         if (doc.data().otp == userEnteredOtp &&
-              doc.data().expiresAt > new Date()) {
+              doc.data().expiresAt < new Date()) {
           doc.ref.update({used: true});
           status = "success";
           message = "OTP matches";

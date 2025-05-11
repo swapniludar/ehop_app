@@ -11,6 +11,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -23,16 +25,16 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
 
@@ -69,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                  setState(() {});
                 },
                 child: Text("Open camera & microphone"),
               ),
@@ -80,17 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {});
                 },
                 child: Text("Create room"),
-              ),
-              SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: () {
-                  // Add roomId
-                  signaling.joinRoom(
-                    textEditingController.text.trim(),
-                    _remoteRenderer,
-                  );
-                },
-                child: Text("Join room"),
               ),
               SizedBox(width: 8),
               ElevatedButton(

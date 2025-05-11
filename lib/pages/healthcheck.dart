@@ -1,7 +1,11 @@
+import 'package:ehop_app/pages/trackers.dart';
 import 'package:flutter/material.dart';
 import 'package:ehop_app/pages/home_page.dart';
-import 'package:ehop_app/pages/orders_page.dart';
+import 'package:ehop_app/pages/my_benefits.dart';
+import 'package:ehop_app/pages/my_appointments.dart';
 import 'package:ehop_app/pages/profile_page.dart';
+import '../Utils/color.dart';
+import 'package:ehop_app/widgets/bottom_nav_bar.dart';
 
 void main() => runApp(HealthCheckApp());
 
@@ -29,7 +33,9 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     HomePage(),
-    OrdersPage(),
+    MyBenefits(),
+    MyAppointments(),
+    Tracker(),
     ProfilePage(),
   ];
 
@@ -59,29 +65,53 @@ class _MainScreenState extends State<MainScreen> {
         child: _pages[_currentIndex],
 
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.teal,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long),
-            label: 'Orders',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar: Builder(
+        builder: (context) {
+          return HomePageWrapper();
+          /*return BottomNavigationBar(
+            currentIndex: _currentIndex,
+            /*selectedItemColor: Colors.teal,
+            unselectedItemColor: Colors.grey[600], // more visible gray
+            selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            unselectedLabelStyle: TextStyle(fontSize: 12),
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,*/
+            elevation: 0,
+            backgroundColor: Colors.white,
+            unselectedItemColor: Colors.black,
+            selectedItemColor: kPrimaryColor,
+            iconSize: 30,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                tooltip: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.receipt_long),
+                label: 'My e-hops',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.receipt_long),
+                label: 'My Appointments',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.receipt_long),
+                label: 'Trackers',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+          );*/
+        }
       ),
     );
   }

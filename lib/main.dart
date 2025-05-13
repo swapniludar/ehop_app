@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehop_app/model/benefit.dart';
+import 'package:ehop_app/partners.dart';
 import 'package:ehop_app/widget/benefit_card.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,13 @@ class BenefitsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> onBenefitTap() async {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PartnersPage()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("EHOP Benefits"),
@@ -49,7 +57,7 @@ class BenefitsPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return BenefitCard(
                     benefit: benefits[index],
-                    onTap: () => {print("Tapped on ${benefits[index].name}")},
+                    onTap: () => onBenefitTap(),
                   );
                 },
               ),

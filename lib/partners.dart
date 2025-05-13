@@ -1,0 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ehop_app/model/partner.dart';
+import 'package:ehop_app/widget/partner_card.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class PartnersPage extends StatelessWidget {
+  const PartnersPage({super.key});
+
+  Future<List<Partner>> getPartners() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('partners').get();
+
+    List<Partner> partners =
+        querySnapshot.docs.map((doc) {
+          return Partner.fromFirestore(
+            doc,
+            null,
+          ); // Assuming your factory method can handle null options
+        }).toList();
+
+    return partners;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Partners"),
+        centerTitle: true,
+        backgroundColor: Colors.amber,
+      ),
+      body: FutureBuilder<List<Partner>>(
+        future: getPartners(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final partners = snapshot.data!;
+            return Center(
+              child: ListView.builder(
+                itemCount: partners.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PartnerCard(
+                    partner: partners[index],
+                    onCall:
+                        () => {
+                          print("Clicked on ${partners[index].firstName}"),
+                        },
+                  );
+                },
+              ),
+            );
+          } else {
+            return const Center(child: Text('No benefits found'));
+          }
+        },
+      ),
+    );
+  }
+}

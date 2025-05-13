@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehop_app/firebase_options.dart';
 import 'package:ehop_app/main.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
@@ -50,6 +52,29 @@ class LoginPageState extends State<LoginPage> {
     });
   }
 
+  Future<void> _ensureFCMToken(String emailAddress) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where('emailAddress', isEqualTo: emailAddress)
+            .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final doc = querySnapshot.docs.first;
+      final data = doc.data();
+      if (!data.containsKey('fcmToken')) {
+        FirebaseMessaging messaging = FirebaseMessaging.instance;
+        String? token = await messaging.getToken();
+        await doc.reference.update({'fcmToken': token});
+        print('fcmToken added to Firestore.');
+      } else {
+        print('fcmToken already exists.');
+      }
+    } else {
+      print('No user found with that email address.');
+    }
+  }
+
   Future<void> _login() async {
     try {
       final functions = FirebaseFunctions.instanceFor(region: 'us-central1');
@@ -63,6 +88,8 @@ class LoginPageState extends State<LoginPage> {
       print('Cloud Function verifyOTP result: ${result.data}');
       if (result.data['status'] == 'success') {
         print("Login successful");
+        await _ensureFCMToken(_emailController.text);
+        print("Ensured FCM token present");
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const BenefitsPage()),

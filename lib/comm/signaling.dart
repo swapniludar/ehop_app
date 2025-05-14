@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 typedef void StreamStateCallback(MediaStream stream);
@@ -28,7 +29,11 @@ class Signaling {
 
   StreamStateCallback? onAddRemoteStream;
 
-  Future<String> createRoom(RTCVideoRenderer remoteRenderer) async {
+  Future<String> createRoom(
+    RTCVideoRenderer remoteRenderer,
+    String callerEmailAddress,
+    String calleeEmailAddress,
+  ) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     DocumentReference roomRef = db.collection('rooms').doc();
 
@@ -69,6 +74,14 @@ class Signaling {
     print('New room created with SDK offer. Room ID: $roomId');
     currentRoomText = 'Current room is $roomId - You are the caller!';
     // Created a Room
+
+    // send notification to callee
+    final functions = FirebaseFunctions.instanceFor(region: 'us-central1');
+    final result = await functions.httpsCallable('sendCallNotification').call({
+      "callerEmailAddress": callerEmailAddress,
+      "calleeEmailAddress": calleeEmailAddress,
+      "roomId": roomId,
+    });
 
     peerConnection?.onTrack = (RTCTrackEvent event) {
       print('Got remote track: ${event.streams[0]}');

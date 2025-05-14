@@ -10,28 +10,28 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 //   runApp(MaterialApp(home: MyApp()));
 // }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Peer to Peer Audio and Video Call',
+//       theme: ThemeData(primarySwatch: Colors.blue),
+//       home: CallInitiatePage(),
+//     );
+//   }
+// }
 
-  // This widget is the root of your application.
+class CallInitiatePage extends StatefulWidget {
+  const CallInitiatePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Peer to Peer Audio and Video Call',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: MyHomePage(),
-    );
-  }
+  CallInitiatePageState createState() => CallInitiatePageState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  MyHomePageState createState() => MyHomePageState();
-}
-
-class MyHomePageState extends State<MyHomePage> {
+class CallInitiatePageState extends State<CallInitiatePage> {
   Signaling signaling = Signaling();
   final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
@@ -78,7 +78,11 @@ class MyHomePageState extends State<MyHomePage> {
               SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () async {
-                  roomId = await signaling.createRoom(_remoteRenderer);
+                  roomId = await signaling.createRoom(
+                    _remoteRenderer,
+                    "swapnil.udar@gmail.com",
+                    "dhanashri.udar@gmail.com",
+                  );
                   textEditingController.text = roomId!;
                   setState(() {});
                 },

@@ -160,3 +160,51 @@ export const verifyOTP = onCall(async (request) => {
     email: userEnteredEmail,
   };
 });
+
+export const sendCallNotification = onCall(async (request) => {
+  const callerEmailAddress = request.data.callerEmailAddress;
+  const calleeEmailAddress = request.data.calleeEmailAddress;
+  const roomId = request.data.roomId;
+
+  if (!callerEmailAddress || !calleeEmailAddress || !roomId) {
+    throw new HttpsError("invalid-argument", "Missing required parameters.");
+  }
+
+  try {
+    const querySnapshot = await admin.firestore()
+      .collection("partners")
+      .where("emailAddress", "==", calleeEmailAddress)
+      .limit(1)
+      .get();
+
+    const firstDocument = querySnapshot.docs[0];
+    const fcmToken = firstDocument.data()?.fcmToken;
+
+    if (!fcmToken) {
+      throw new HttpsError("not-found", "FCM token not found for callee.");
+    }
+
+    const message: admin.messaging.Message = {
+      token: fcmToken,
+      data: {
+        type: "incoming_call",
+        roomId: roomId,
+        callerId: callerEmailAddress,
+      },
+      android: {
+        priority: "high",
+      },
+      apns: {
+        headers: {
+          "apns-priority": "10",
+        },
+      },
+    };
+
+    await admin.messaging().send(message);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending FCM message:", error);
+    throw new HttpsError("internal", "Failed to send FCM message.");
+  }
+});

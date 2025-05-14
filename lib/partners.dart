@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ehop_app/call.dart';
 import 'package:ehop_app/model/partner.dart';
 import 'package:ehop_app/widget/partner_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,13 @@ class PartnersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> onCall() async {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const CallInitiatePage()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Partners"),
@@ -45,10 +53,7 @@ class PartnersPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return PartnerCard(
                     partner: partners[index],
-                    onCall:
-                        () => {
-                          print("Clicked on ${partners[index].firstName}"),
-                        },
+                    onCall: () => onCall(),
                   );
                 },
               ),

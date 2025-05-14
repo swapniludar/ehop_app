@@ -14,19 +14,19 @@ class PartnerCard extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("${partner.firstName} ${partner.lastName}"),
             const SizedBox(height: 4.0),
             Text(partner.emailAddress),
-            const SizedBox(width: 20),
+            const SizedBox(height: 20),
             Text(partner.speciality),
-            const SizedBox(width: 20),
+            const SizedBox(height: 20),
             Text(partner.id),
-            const SizedBox(width: 20),
+            const SizedBox(height: 20),
             Text(partner.fcmToken),
-            const SizedBox(width: 20),
+            const SizedBox(height: 20),
             CupertinoButton(onPressed: onCall, child: const Text('Call')),
           ],
         ),

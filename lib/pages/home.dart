@@ -1,25 +1,68 @@
-import 'package:ehop_app/Utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-
-void main() {
-  runApp(EhopApp());
-}
-
-
-class EhopApp extends StatefulWidget {
-  const EhopApp({super.key});
+class EhopHome extends StatefulWidget {
+  const EhopHome({super.key});
 
   @override
-  State<EhopApp> createState() => _EhopApp();
+  State<EhopHome> createState() => _EhopHome();
 }
 
-class _EhopApp extends State<EhopApp> {
+class _EhopHome extends State<EhopHome> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /*Text(
+              "ehop",
+              style: GoogleFonts.lato(
+                textStyle: Theme.of(context).textTheme.displayLarge,
+                fontSize: 35,
+                fontWeight: FontWeight.w900,//FontWeight.w700,
+                fontStyle: FontStyle.italic,
+              ),
+            ),*/
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: "ehop - ",
+                    style: GoogleFonts.lato(
+                      textStyle: Theme.of(context).textTheme.displayLarge,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w900,//FontWeight.w700,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "Hi, Pratik ",
+                    style: GoogleFonts.actor(
+                      textStyle: Theme.of(context).textTheme.displaySmall,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,//FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+
+                    ),
+                  )
+                ]
+              )
+            )
+          ],
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {}, icon: Icon(Ionicons.notifications_outline)),
+          Icon(
+            Ionicons.logo_skype
+          )
+        ],
+      ),
 
     );
   }

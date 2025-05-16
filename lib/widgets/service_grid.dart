@@ -13,7 +13,7 @@ class ServiceGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount = constraints.maxWidth > 1000
-            ? 5
+            ? 10
             : constraints.maxWidth > 600
             ? 3
             : 5;
@@ -22,11 +22,13 @@ class ServiceGrid extends StatelessWidget {
           itemCount: services.length,
           padding: const EdgeInsets.all(0),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 3,
-
+            //crossAxisCount: crossAxisCount,
+            //childAspectRatio: 1,
+            //mainAxisExtent: 100,
+            crossAxisCount: 3,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
           ),
           itemBuilder: (context, index) {
             return ServiceCard(

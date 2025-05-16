@@ -1,27 +1,37 @@
-import 'package:ehop_app/Utils/color.dart';
+import 'package:ehop_app/pages/home.dart';
 import 'package:flutter/material.dart';
 
 
 void main() {
-  runApp(EhopHome());
+  runApp(const MyApp());
 }
 
 
-class EhopHome extends StatefulWidget {
-  const EhopHome({super.key});
-
-  @override
-  State<EhopHome> createState() => _EhopHome();
-}
-
-class _EhopHome extends State<EhopHome> {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
-      
+    return MaterialApp(
+      title: 'ehop',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+        textTheme: TextTheme(
+          displayLarge: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
 
+        ),
+      ),
+      home: const EhopHome(),
     );
   }
+
 }
+

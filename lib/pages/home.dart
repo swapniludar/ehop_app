@@ -3,24 +3,23 @@ import 'package:flutter/material.dart';
 
 
 void main() {
-  runApp(EhopHome());
+  runApp(EhopApp());
 }
 
 
-class EhopHome extends StatefulWidget {
-  const EhopHome({super.key});
+class EhopApp extends StatefulWidget {
+  const EhopApp({super.key});
 
   @override
-  State<EhopHome> createState() => _EhopHome();
+  State<EhopApp> createState() => _EhopApp();
 }
 
-class _EhopHome extends State<EhopHome> {
+class _EhopApp extends State<EhopApp> {
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.white,
-      
 
     );
   }

@@ -1,3 +1,4 @@
+import 'package:ehop_app/call.dart';
 import 'package:ehop_app/comm/chat_signaling.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,7 @@ class ChatInitiatePageState extends State<ChatInitiatePage> {
   Future<void> _call() async {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ChatInitiatePage()),
+      MaterialPageRoute(builder: (context) => const CallInitiatePage()),
     );
   }
 

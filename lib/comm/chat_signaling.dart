@@ -27,10 +27,12 @@ class Signaling {
   RTCDataChannel? dataChannel;
   MessageStateCallback? onMessageReceived;
 
+  final String dbCollection = 'chat_rooms';
+
   Future<String> createRoom(String callerEmailAddress, String calleeEmailAddress,
   ) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentReference roomRef = db.collection('rooms').doc();
+    DocumentReference roomRef = db.collection(dbCollection).doc();
 
     print('Create PeerConnection with configuration: $configuration');
     peerConnection = await createPeerConnection(configuration);

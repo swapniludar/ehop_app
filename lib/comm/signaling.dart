@@ -29,13 +29,15 @@ class Signaling {
 
   StreamStateCallback? onAddRemoteStream;
 
+  final String dbCollection = 'call_rooms';
+
   Future<String> createRoom(
     RTCVideoRenderer remoteRenderer,
     String callerEmailAddress,
     String calleeEmailAddress,
   ) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentReference roomRef = db.collection('rooms').doc();
+    DocumentReference roomRef = db.collection(dbCollection).doc();
 
     print('Create PeerConnection with configuration: $configuration');
     peerConnection = await createPeerConnection(configuration);
@@ -157,7 +159,7 @@ class Signaling {
 
     if (roomId != null) {
       var db = FirebaseFirestore.instance;
-      var roomRef = db.collection('rooms').doc(roomId);
+      var roomRef = db.collection(dbCollection).doc(roomId);
       var calleeCandidates = await roomRef.collection('calleeCandidates').get();
       calleeCandidates.docs.forEach((document) => document.reference.delete());
 

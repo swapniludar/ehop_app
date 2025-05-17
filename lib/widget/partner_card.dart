@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class PartnerCard extends StatelessWidget {
   final Partner partner;
-  final VoidCallback onCall;
+  final VoidCallback onChat;
 
-  const PartnerCard({super.key, required this.partner, required this.onCall});
+  const PartnerCard({super.key, required this.partner, required this.onChat});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class PartnerCard extends StatelessWidget {
             const SizedBox(height: 20),
             Text(partner.fcmToken),
             const SizedBox(height: 20),
-            CupertinoButton(onPressed: onCall, child: const Text('Call')),
+            CupertinoButton(onPressed: onChat, child: const Text('Chat')),
           ],
         ),
       ),

@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ehop_app/call.dart';
+import 'package:ehop_app/chat.dart';
 import 'package:ehop_app/model/partner.dart';
 import 'package:ehop_app/widget/partner_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PartnersPage extends StatelessWidget {
@@ -25,10 +24,10 @@ class PartnersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> onCall() async {
+    Future<void> onChat() async {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const CallInitiatePage()),
+        MaterialPageRoute(builder: (context) => const ChatInitiatePage()),
       );
     }
 
@@ -53,7 +52,7 @@ class PartnersPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return PartnerCard(
                     partner: partners[index],
-                    onCall: () => onCall(),
+                    onChat: () => onChat(),
                   );
                 },
               ),

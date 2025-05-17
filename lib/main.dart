@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ehop_app/model/benefit.dart';
+import 'package:ehop_app/models/benefit.dart';
 import 'package:ehop_app/partners.dart';
-import 'package:ehop_app/widget/benefit_card.dart';
+import 'package:ehop_app/widgets/benefit_card.dart';
 import 'package:flutter/material.dart';
 
 class BenefitsPage extends StatelessWidget {

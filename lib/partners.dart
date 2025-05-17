@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehop_app/chat.dart';
-import 'package:ehop_app/model/partner.dart';
-import 'package:ehop_app/widget/partner_card.dart';
+import 'package:ehop_app/models/partner.dart';
+import 'package:ehop_app/widgets/partner_card.dart';
 import 'package:flutter/material.dart';
 
 class PartnersPage extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehop_app/firebase_options.dart';
 import 'package:ehop_app/main.dart';
+import 'package:ehop_app/pages/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,8 @@ class LoginPageState extends State<LoginPage> {
         print("Ensured FCM token present");
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const BenefitsPage()),
+          //MaterialPageRoute(builder: (context) => const BenefitsPage()),
+          MaterialPageRoute(builder: (context) => const Home()),
         );
       } else {
         print("Login failed");

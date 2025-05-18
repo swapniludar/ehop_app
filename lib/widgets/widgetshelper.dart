@@ -16,7 +16,6 @@ class ServiceHelper extends StatelessWidget {
     else {
       return input.replaceFirst(' ', '\n');
     }
-    return input;
   }
 
   @override

@@ -47,4 +47,5 @@ app.*.map.json
 # Firebase cloud function
 /functions/node_modules
 /functions/lib
+.vs/
 

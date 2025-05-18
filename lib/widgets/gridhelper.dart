@@ -62,9 +62,6 @@ class _GridHelperState extends State<GridHelper> {
       final result = await Dao.getBenefits(); // Your async function returning Future<List<String>>
       setState(() {
         for (var item in result) {
-          print(item.title);
-          print(item.imagePath);
-          //listProducts.add(item);
           services.add(
               Service(imagepath: item.imagePath, label: item.title)
           );
@@ -85,27 +82,25 @@ class _GridHelperState extends State<GridHelper> {
     if (isLoading) {
       return CircularProgressIndicator(); // Loading indicator
     }
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-            (services.length / Constants.service_columns_per_row).ceil(), (rowIndex) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(Constants.service_columns_per_row, (colIndex) {
-              int index = rowIndex * Constants.service_columns_per_row + colIndex;
-              if (index < services.length) {
-                return ServiceHelper(
-                    imageName: services[index].imagepath,
-                    label: services[index].label);//.replaceFirst(" ", "\n"));
-              } else {
-                return SizedBox(width: 55); // Empty space for alignment
-              }
-            },
-            ),
-          );
-        }
-        ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(
+          (services.length / Constants.service_columns_per_row).ceil(), (rowIndex) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(Constants.service_columns_per_row, (colIndex) {
+            int index = rowIndex * Constants.service_columns_per_row + colIndex;
+            if (index < services.length) {
+              return ServiceHelper(
+                  imageName: services[index].imagepath,
+                  label: services[index].label);//.replaceFirst(" ", "\n"));
+            } else {
+              return SizedBox(width: 55); // Empty space for alignment
+            }
+          },
+          ),
+        );
+      }
       ),
     );
   }

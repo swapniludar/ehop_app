@@ -1,17 +1,16 @@
-import "package:cloud_firestore/cloud_firestore.dart";
-
-import "package:ehop_app/models/mybenefits.dart";
 import "package:ehop_app/pages/homebody.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 
 import "../firebase_options.dart";
 import "../utils/appcolors.dart";
+import "myehops.dart";
+import "mytrackers.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MaterialApp(home: const MyApp()));
+  runApp(MaterialApp(home: const MyApp(), debugShowCheckedModeBanner: false,));
 }
 
 class MyApp extends StatelessWidget {
@@ -59,8 +58,8 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _pages = [
     HomeBody(),
-    HomeBody(),
-    HomeBody(),
+    MyTrackers(),
+    MyEhops(),
     HomeBody(),
     HomeBody(),
   ];
@@ -74,6 +73,35 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "e-hop",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notification icon press
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Image.asset(
+              'assets/images/ehop_logo_1.jpg',
+              height: 50,
+              width: 50,
+            ),
+          ),
+        ],
+        centerTitle: false,
+        backgroundColor: Colors.pink.shade900,
+      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -81,8 +109,8 @@ class _HomeState extends State<Home> {
         //selectedItemColor: Colors.teal,
         //unselectedItemColor: Colors.grey,
         elevation: 0,
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.black,
+        backgroundColor: Colors.pink.shade900,
+        unselectedItemColor: Colors.grey,
         selectedItemColor: kPrimaryColor,
         iconSize: 20,
         type: BottomNavigationBarType.fixed,
@@ -94,15 +122,15 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt_long),
+            label: 'Trackers',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
             label: 'My e-hops',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt_long),
             label: 'My Appointments',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long),
-            label: 'Trackers',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

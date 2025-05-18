@@ -4,14 +4,14 @@ import "package:ehop_app/dal/dao.dart";
 
 import '../widgets/gridhelper.dart';
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
+class MyEhops extends StatefulWidget {
+  const MyEhops({super.key});
 
   @override
-  State<HomeBody> createState() => _HomeBodyState();
+  State<MyEhops> createState() => _MyEhopsState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _MyEhopsState extends State<MyEhops> {
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class _HomeBodyState extends State<HomeBody> {
             Container(
               padding: EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -38,29 +39,15 @@ class _HomeBodyState extends State<HomeBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
                   Text(
-                    "Hello, Jane",
+                    "My e-hops",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  /*SizedBox(height: 20),
-                  Text(
-                    "Health Risks",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),*/
                   SizedBox(height: 30.0),
-                  GridHelper(),
-                  SizedBox(height: 10.0),
-                  GridHelper(),
-                  SizedBox(height: 10.0),
                   GridHelper(),
                 ],
               ),

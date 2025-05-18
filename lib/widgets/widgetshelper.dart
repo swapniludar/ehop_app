@@ -9,6 +9,16 @@ class ServiceHelper extends StatelessWidget {
     required this.label,
   });
 
+  String appendNewlineIfSingleWord(String input) {
+    if (!input.contains(' ')) {
+      return '$input\n';
+    }
+    else {
+      return input.replaceFirst(' ', '\n');
+    }
+    return input;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,15 +30,16 @@ class ServiceHelper extends StatelessWidget {
           child:
           Image.asset(
             imageName,
-            height: 30,
-            width: 30,
+            height: 40,
+            width: 40,
             fit:
             BoxFit.cover,
           ),
+
         ),
         SizedBox(height: 5.0,),
         Text(
-          label,
+          appendNewlineIfSingleWord(label),
           style: TextStyle(
             color: Colors.white,
             fontSize: 10.0,

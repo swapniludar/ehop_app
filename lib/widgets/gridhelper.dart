@@ -6,8 +6,40 @@ import "package:flutter/material.dart";
 import "../dal/dao.dart";
 import "../models/Service.dart";
 
+class MyWidget extends StatelessWidget {
+  final Future<List<String>> futureList;
+
+  MyWidget({required this.futureList});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<String>>(
+      future: futureList,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}'); // Error message
+        } else if (snapshot.hasData) {
+          final items = snapshot.data!;
+          return ListView(
+            children: List.generate(
+              items.length,
+                  (index) => ListTile(title: Text(items[index])),
+            ),
+          );
+        } else {
+          return Text('No data available');
+        }
+      },
+    );
+  }
+}
+
 class GridHelper extends StatefulWidget {
-  const GridHelper({super.key});
+  GridHelper({super.key});
+
+
 
   @override
   State<GridHelper> createState() => _GridHelperState();
@@ -15,54 +47,44 @@ class GridHelper extends StatefulWidget {
 //final List<MyBenefit> listObjects;
 }
 class _GridHelperState extends State<GridHelper> {
+  List<Service> services = [];
+  bool isLoading = true;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
 
-    List<Service> getBenefitList() {
-      List<Service> serList = [];
-      Future<List<MyBenefit>> listFuture;
-      listFuture = Dao.getBenefits();
-      listFuture.then((value) {
-        for (var item in value) {
+  Future<void> loadData() async {
+    try {
+      final result = await Dao.getBenefits(); // Your async function returning Future<List<String>>
+      setState(() {
+        for (var item in result) {
           print(item.title);
           print(item.imagePath);
           //listProducts.add(item);
-          serList.add(
-            Service(imagepath: item.imagePath, label: item.title)
+          services.add(
+              Service(imagepath: item.imagePath, label: item.title)
           );
         }
+        isLoading = false;
       });
-      return serList;
+    } catch (e) {
+      // Handle error
+      setState(() {
+        isLoading = false;
+      });
     }
+  }
 
-    final List<Service> services = getBenefitList();
 
-
-    /*
-
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-            (listObjects.length / Constants.service_columns_per_row).ceil(), (rowIndex) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(Constants.service_columns_per_row, (colIndex) {
-                  int index = rowIndex * Constants.service_columns_per_row + colIndex;
-                  if (index < listObjects.length) {
-                    return ServiceHelper(imageName: listObjects[index].imagePath, label: listObjects[index].title);
-                  } else {
-                    return SizedBox(width: 70); // Empty space for alignment
-                  }
-                },
-            ),
-          );
-        }
-        ),
-      ),
-    );
-    */
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return CircularProgressIndicator(); // Loading indicator
+    }
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,9 +95,11 @@ class _GridHelperState extends State<GridHelper> {
             children: List.generate(Constants.service_columns_per_row, (colIndex) {
               int index = rowIndex * Constants.service_columns_per_row + colIndex;
               if (index < services.length) {
-                return ServiceHelper(imageName: services[index].imagepath, label: services[index].label);
+                return ServiceHelper(
+                    imageName: services[index].imagepath,
+                    label: services[index].label);//.replaceFirst(" ", "\n"));
               } else {
-                return SizedBox(width: 70); // Empty space for alignment
+                return SizedBox(width: 55); // Empty space for alignment
               }
             },
             ),
@@ -84,12 +108,6 @@ class _GridHelperState extends State<GridHelper> {
         ),
       ),
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }
 

@@ -58,7 +58,7 @@ class _HomeBodyState extends State<HomeBody> {
 
                   ],
                 ),
-
+                /*
                 Text(
                   "My Benefits",
                   style: TextStyle(
@@ -366,6 +366,7 @@ class _HomeBodyState extends State<HomeBody> {
 
                   ],
                 ),
+                */
                 SizedBox(height: 20),
                 Text(
                   "Health Risks",

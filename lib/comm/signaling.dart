@@ -84,6 +84,7 @@ class Signaling {
       "calleeEmailAddress": calleeEmailAddress,
       "roomId": roomId,
     });
+    print("Sent call notification: $result");
 
     peerConnection?.onTrack = (RTCTrackEvent event) {
       print('Got remote track: ${event.streams[0]}');

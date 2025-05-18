@@ -4,26 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   runApp(MaterialApp(home: MyApp()));
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Peer to Peer Audio and Video Call',
-//       theme: ThemeData(primarySwatch: Colors.blue),
-//       home: CallInitiatePage(),
-//     );
-//   }
-// }
-
 class CallInitiatePage extends StatefulWidget {
   const CallInitiatePage({super.key});
 
@@ -36,19 +16,50 @@ class CallInitiatePageState extends State<CallInitiatePage> {
   final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
+  bool callInitiated = false;
   TextEditingController textEditingController = TextEditingController(text: '');
 
   @override
   void initState() {
-    _localRenderer.initialize();
-    _remoteRenderer.initialize();
+    _initCall();
+    super.initState();
+  }
+
+  Future<void> _initCall() async {
+    await _localRenderer.initialize();
+    await _remoteRenderer.initialize();
+
+    signaling.openUserMedia(_localRenderer, _remoteRenderer);
+    setState(() {});
+
+    _localRenderer.onFirstFrameRendered = () async {
+      print("Local video rendered for the first time!");
+    };
+
+    _localRenderer.onResize = () async {
+      if (callInitiated) {
+        print("Call already initiated");
+      } else {
+        if (_localRenderer.videoWidth > 0 && _localRenderer.videoHeight > 0) {
+          print("✅ First frame likely rendered (via onResize)");
+          roomId = await signaling.createRoom(
+            _remoteRenderer,
+            "swapnil.udar@gmail.com",
+            "dhanashri.udar@gmail.com",
+          );
+          textEditingController.text = roomId!;
+          print("Call initiated");
+          setState(() {
+            callInitiated = true;
+          });
+        }
+      }
+    };
 
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
       setState(() {});
     });
-
-    super.initState();
   }
 
   @override
@@ -68,26 +79,6 @@ class CallInitiatePageState extends State<CallInitiatePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
-                  setState(() {});
-                },
-                child: Text("Open camera & microphone"),
-              ),
-              SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: () async {
-                  roomId = await signaling.createRoom(
-                    _remoteRenderer,
-                    "swapnil.udar@gmail.com",
-                    "dhanashri.udar@gmail.com",
-                  );
-                  textEditingController.text = roomId!;
-                  setState(() {});
-                },
-                child: Text("Create room"),
-              ),
               SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () {
@@ -110,19 +101,6 @@ class CallInitiatePageState extends State<CallInitiatePage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Join the following Room: "),
-                Flexible(
-                  child: TextFormField(controller: textEditingController),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 8),
         ],
       ),
     );

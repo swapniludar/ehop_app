@@ -17,7 +17,7 @@ class PartnerCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("${partner.firstName} ${partner.lastName}"),
+            Text("${partner.title} ${partner.name}"),
             const SizedBox(height: 4.0),
             Text(partner.emailAddress),
             const SizedBox(height: 20),

@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "../pages/doctors_screen.dart";
+
 class ServiceHelper extends StatelessWidget {
   final String imageName;
   final String label;
@@ -18,6 +20,46 @@ class ServiceHelper extends StatelessWidget {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 10.0,),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DoctorsScreen()),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            child:
+            Image.asset(
+              imageName,
+              height: 40,
+              width: 40,
+              fit:
+              BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(height: 5.0,),
+        Text(
+          appendNewlineIfSingleWord(label),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 10.0,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 10.0,),
+      ],
+    );
+  }
+  /*
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,6 +92,7 @@ class ServiceHelper extends StatelessWidget {
       ],
     );
   }
+   */
 }
 
 

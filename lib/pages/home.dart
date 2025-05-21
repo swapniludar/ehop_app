@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 
 import "../firebase_options.dart";
 import "../utils/appcolors.dart";
+import "doctors_screen.dart";
 import "myehops.dart";
 import "mytrackers.dart";
 
@@ -60,7 +61,7 @@ class _HomeState extends State<Home> {
     HomeBody(),
     MyTrackers(),
     MyEhops(),
-    HomeBody(),
+    DoctorsScreen(),
     HomeBody(),
   ];
 
@@ -86,12 +87,13 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications),
+            color: Colors.white,
             onPressed: () {
               // Handle notification icon press
             },
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Image.asset(
               'assets/images/ehop_logo_1.jpg',
               height: 50,

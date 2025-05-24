@@ -165,6 +165,7 @@ export const sendCallNotification = onCall(async (request) => {
   const callerEmailAddress = request.data.callerEmailAddress;
   const calleeEmailAddress = request.data.calleeEmailAddress;
   const roomId = request.data.roomId;
+  const type = request.data.type;
 
   if (!callerEmailAddress || !calleeEmailAddress || !roomId) {
     throw new HttpsError("invalid-argument", "Missing required parameters.");
@@ -187,7 +188,7 @@ export const sendCallNotification = onCall(async (request) => {
     const message: admin.messaging.Message = {
       token: fcmToken,
       data: {
-        type: "incoming_call",
+        type: type,
         roomId: roomId,
         callerId: callerEmailAddress,
       },

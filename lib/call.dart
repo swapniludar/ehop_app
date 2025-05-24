@@ -1,8 +1,7 @@
 import 'package:ehop_app/comm/signaling.dart';
-import 'package:ehop_app/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:synchronized/synchronized.dart';
 
 class CallInitiatePage extends StatefulWidget {
   const CallInitiatePage({super.key});
@@ -18,6 +17,7 @@ class CallInitiatePageState extends State<CallInitiatePage> {
   String? roomId;
   bool callInitiated = false;
   TextEditingController textEditingController = TextEditingController(text: '');
+  final _lock = Lock();
 
   @override
   void initState() {
@@ -33,27 +33,48 @@ class CallInitiatePageState extends State<CallInitiatePage> {
     setState(() {});
 
     _localRenderer.onFirstFrameRendered = () async {
-      print("Local video rendered for the first time!");
+      await _lock.synchronized(() async {
+        print("Local video rendered for the first time!");
+        if (callInitiated) {
+          print("Call already initiated");
+        } else {
+          if (_localRenderer.videoWidth > 0 && _localRenderer.videoHeight > 0) {
+            print("✅ First frame likely rendered (via onResize)");
+            roomId = await signaling.createRoom(
+              _remoteRenderer,
+              "swapnil.udar@gmail.com",
+              "dhanashri.udar@gmail.com",
+            );
+            textEditingController.text = roomId!;
+            print("Call initiated");
+            setState(() {
+              callInitiated = true;
+            });
+          }
+        }
+      });
     };
 
     _localRenderer.onResize = () async {
-      if (callInitiated) {
-        print("Call already initiated");
-      } else {
-        if (_localRenderer.videoWidth > 0 && _localRenderer.videoHeight > 0) {
-          print("✅ First frame likely rendered (via onResize)");
-          roomId = await signaling.createRoom(
-            _remoteRenderer,
-            "swapnil.udar@gmail.com",
-            "dhanashri.udar@gmail.com",
-          );
-          textEditingController.text = roomId!;
-          print("Call initiated");
-          setState(() {
-            callInitiated = true;
-          });
+      await _lock.synchronized(() async {
+        if (callInitiated) {
+          print("Call already initiated");
+        } else {
+          if (_localRenderer.videoWidth > 0 && _localRenderer.videoHeight > 0) {
+            print("✅ First frame likely rendered (via onResize)");
+            roomId = await signaling.createRoom(
+              _remoteRenderer,
+              "swapnil.udar@gmail.com",
+              "dhanashri.udar@gmail.com",
+            );
+            textEditingController.text = roomId!;
+            print("Call initiated");
+            setState(() {
+              callInitiated = true;
+            });
+          }
         }
-      }
+      });
     };
 
     signaling.onAddRemoteStream = ((stream) {

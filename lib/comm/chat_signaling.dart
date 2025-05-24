@@ -89,6 +89,7 @@ class Signaling {
       "callerEmailAddress": callerEmailAddress,
       "calleeEmailAddress": calleeEmailAddress,
       "roomId": roomId,
+      "type" : "chat",
     });
 
     // Listening for remote session description below

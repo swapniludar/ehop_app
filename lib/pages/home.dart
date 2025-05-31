@@ -1,10 +1,11 @@
 import "package:ehop_app/pages/homebody.dart";
+import "package:ehop_app/pages/settings_screen.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 
 import "../firebase_options.dart";
 import "../utils/appcolors.dart";
-import "doctors_screen.dart";
+import "partners_screen.dart";
 import "myehops.dart";
 import "mytrackers.dart";
 
@@ -61,8 +62,8 @@ class _HomeState extends State<Home> {
     HomeBody(),
     MyTrackers(),
     MyEhops(),
-    DoctorsScreen(),
-    HomeBody(),
+    PartnersScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text(
           "e-hop",
           style: TextStyle(
@@ -85,13 +86,14 @@ class _HomeState extends State<Home> {
           ),
         ),
         actions: [
+          /*
           IconButton(
             icon: Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {
               // Handle notification icon press
             },
-          ),
+          ),*/
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Image.asset(
@@ -103,7 +105,7 @@ class _HomeState extends State<Home> {
         ],
         centerTitle: false,
         backgroundColor: Colors.pink.shade900,
-      ),
+      ),*/
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -135,10 +137,44 @@ class _HomeState extends State<Home> {
             label: 'My Appointments',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
+        /*onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeBody()),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyTrackers()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyEhops()),
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PartnersScreen()),
+              );
+              break;
+            case 4:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsScreen()),
+              );
+              break;
+          }
+        },*/
       ),
 
     );

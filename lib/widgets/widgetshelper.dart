@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "../pages/doctors_screen.dart";
+import "../pages/partners_screen.dart";
 
 class ServiceHelper extends StatelessWidget {
   final String imageName;
@@ -27,10 +27,13 @@ class ServiceHelper extends StatelessWidget {
         SizedBox(height: 10.0,),
         InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DoctorsScreen()),
-            );
+            if (label == "Consult a doctor"){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PartnersScreen()),
+              );
+            }
+
           },
           child: Container(
             padding: EdgeInsets.all(10),
@@ -46,14 +49,18 @@ class ServiceHelper extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5.0,),
-        Text(
-          appendNewlineIfSingleWord(label),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 10.0,
-            fontWeight: FontWeight.bold,
+        Container(
+          width: 65,
+          child: Text(
+            appendNewlineIfSingleWord(label),
+            //label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10.0,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
         SizedBox(height: 10.0,),
       ],

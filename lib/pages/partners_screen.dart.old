@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../models/partners.dart';
+import '../widgets/partners_card.dart';
 import 'appointment_screen.dart';
 
 class PartnersScreen extends StatelessWidget {
   PartnersScreen({super.key});
-
+  List<Partners> partners = [
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg"),
+    Partners("1", "Dr. Doctor Name", "LastName", "test@test.com", "General Physycian", "aadad324dsa", "assets/images/doctor1.jpg")
+  ];
   List symptoms = ["Temperature", "Snuffle", "Fever", "Cough", "Cold"];
 
   List img = [
@@ -18,9 +31,10 @@ class PartnersScreen extends StatelessWidget {
     "doctor1.jpg",
     "doctor1.jpg",
     "doctor1.jpg",
-
   ];
 
+
+  /*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,6 +254,32 @@ class PartnersScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+*/
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        //backgroundColor: Colors.pink.shade900,
+        title: Text(
+          "Popular Doctors",
+
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: partners.length,
+        itemBuilder: (context, index) {
+          final partner = partners[index];
+          return PartnersCard(
+            partner: partner,
+            onTap: () {
+              // Navigate to doctor details page here if needed
+            },
+          );
+        },
       ),
     );
   }

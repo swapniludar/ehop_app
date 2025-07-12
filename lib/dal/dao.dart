@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ehop_app/models/mybenefits.dart';
+import 'package:ehop_app/models/mybenefits.dart.old';
 import 'package:flutter/material.dart';
 
 class Dao {
@@ -7,7 +7,8 @@ class Dao {
   static Future<List<MyBenefit>> getBenefits() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await FirebaseFirestore.instance.collection('health_benefits').get();
+      //await FirebaseFirestore.instance.collection('health_benefits').get();
+      await FirebaseFirestore.instance.collection('benefits').get();
 
       List<MyBenefit> benefits =
       querySnapshot.docs.map((doc) {

@@ -1,18 +1,22 @@
 import "package:ehop_app/pages/homebody.dart";
 import "package:ehop_app/pages/settings_screen.dart";
+import "package:ehop_app/pages/splash_screen.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import "../firebase_options.dart";
-import "../utils/appcolors.dart";
-import "partners_screen.dart";
+import "../utils/app_theme.dart";
+import "partners_screen.dart.old";
 import "myehops.dart";
 import "mytrackers.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MaterialApp(home: const MyApp(), debugShowCheckedModeBanner: false,));
+  //runApp(MaterialApp(home: const MyApp(), debugShowCheckedModeBanner: false,));
+  //runApp(MaterialApp(home: const MyApp(), debugShowCheckedModeBanner: false,));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,25 +28,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      /*
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Home(),//const MyHomePage(title: 'ehop'),
+      */
+      theme: ThemeData(
+        //primarySwatch: Colors.teal,
+        scaffoldBackgroundColor: Colors.white,
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: false,
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+          size: 30,
+        ),
+
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
+          bodyMedium: TextStyle(fontSize: 16, color: Colors.black54),
+          titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Colors.teal,
+          unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.white,
+          elevation: 5,
+        ),
+      ),
+      home: SplashScreen(),//const MyHomePage(title: 'ehop'),
     );
   }
 }
@@ -75,37 +96,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text(
-          "e-hop",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-
-          ),
-        ),
-        actions: [
-          /*
-          IconButton(
-            icon: Icon(Icons.notifications),
-            color: Colors.white,
-            onPressed: () {
-              // Handle notification icon press
-            },
-          ),*/
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Image.asset(
-              'assets/images/ehop_logo_1.jpg',
-              height: 50,
-              width: 50,
-            ),
-          ),
-        ],
-        centerTitle: false,
-        backgroundColor: Colors.pink.shade900,
-      ),*/
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -113,9 +103,9 @@ class _HomeState extends State<Home> {
         //selectedItemColor: Colors.teal,
         //unselectedItemColor: Colors.grey,
         elevation: 0,
-        backgroundColor: Colors.pink.shade900,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: kPrimaryColor,
+        //backgroundColor: Colors.pink.shade900,
+        //unselectedItemColor: Colors.grey,
+        //selectedItemColor: kPrimaryColor,
         iconSize: 20,
         type: BottomNavigationBarType.fixed,
         items: const [
@@ -141,40 +131,6 @@ class _HomeState extends State<Home> {
             label: 'Settings',
           ),
         ],
-        /*onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeBody()),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyTrackers()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyEhops()),
-              );
-              break;
-            case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PartnersScreen()),
-              );
-              break;
-            case 4:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
-              );
-              break;
-          }
-        },*/
       ),
 
     );

@@ -1,8 +1,7 @@
-import "package:ehop_app/models/mybenefits.dart";
+import "package:ehop_app/models/mybenefits.dart.old";
 import "package:ehop_app/widgets/widgetshelper.dart";
 import "package:ehop_app/utils/constants.dart";
 import "package:flutter/material.dart";
-
 import "../dal/dao.dart";
 import "../models/Service.dart";
 
@@ -64,6 +63,7 @@ class _GridHelperState extends State<GridHelper> {
         for (var item in result) {
           services.add(
               Service(imagepath: item.imagePath, label: item.title)
+              //Service(label: item.title, iconName: item.)
           );
         }
         isLoading = false;
@@ -83,24 +83,26 @@ class _GridHelperState extends State<GridHelper> {
       return CircularProgressIndicator(); // Loading indicator
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
-          (services.length / Constants.service_columns_per_row).ceil(), (rowIndex) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(Constants.service_columns_per_row, (colIndex) {
-            int index = rowIndex * Constants.service_columns_per_row + colIndex;
-            if (index < services.length) {
-              return ServiceHelper(
-                  imageName: services[index].imagepath,
-                  label: services[index].label);//.replaceFirst(" ", "\n"));
-            } else {
-              return SizedBox(width: 55); // Empty space for alignment
-            }
-          },
-          ),
-        );
-      }
+        (services.length / Constants.service_columns_per_row).ceil(), (rowIndex) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              Constants.service_columns_per_row, (colIndex) {
+                int index = rowIndex * Constants.service_columns_per_row + colIndex;
+                if (index < services.length) {
+                  return ServiceHelper1(
+                      imageName: services[index].imagepath,
+                      label: services[index].label
+                  );//.replaceFirst(" ", "\n"));               //.replaceFirst(" ", "\n"));
+                } else {
+                  return SizedBox(width: 55); // Empty space for alignment
+                }
+              },
+            ),
+          );
+        }
       ),
     );
   }
